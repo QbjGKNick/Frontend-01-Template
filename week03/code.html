@@ -1,0 +1,53 @@
+<script>
+    function convertStringToNumber(str, x) {
+        if (arguments.length < 2) {
+            x = 10;
+        }
+        if (Object.prototype.toString.call(str) !== '[object String]') {
+            throw new Error('str必须是字符串')
+        }
+        let chars = str.split('');
+        const length = chars.length;
+        let number = 0;
+        let i =0;
+        while(i<length && chars[i] != '.') {
+            number = number * x;
+            number += chars[i].codePointAt(0) - '0'.codePointAt(0);
+            i++;
+        }
+        if (chars[i] === '.') {
+            i++;
+        }
+        let fraction = 1;
+        while(i<length) {
+            fraction = fraction /x;
+            number += (chars[i].codePointAt(0) - '0'.codePointAt(0)) * fraction;
+            i++;
+        }
+        return number
+    }
+
+    function convertNumberToString(number, x) {
+        if (typeof number !== 'number') {
+            throw new Error('number必须为数值')
+        }
+        if (arguments.length < 2) {
+            x = 10;
+        }
+        let integer = Math.floor(number)
+        let fraction = number - integer
+
+        let str = ''
+        while(integer > 0) {
+            str += integer % x;
+            integer = Math.floor(integer / x)
+        }
+        let fractionStr = str + '.'
+        while(fraction > 0) {
+            let temp = Math.floor(fraction * x)
+            fractionStr += temp
+            fraction = fraction*x - temp
+        }
+        return str
+    }
+</script>
